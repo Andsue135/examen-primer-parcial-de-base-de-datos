@@ -1,0 +1,45 @@
+seleccione * de bd_facts.tbl_clientes;
+seleccionar * de bd_facts.tbl_asesores;
+seleccione * de bd_facts.tbl_facturas;
+
+
+Seleccione
+t1.numeroID,
+concat_ws(' ',nombres,apellidos) as'nombrecompleto'
+de bd_facts.tbl_clientes t1
+unión interna bd_facts.tbl_asesores t2
+;
+
+
+Seleccione
+t1.nombrecompleto,
+t2.idFactura,
+t2.fechaEmisión,
+t2.fechaVencimiento,
+t2.fechapagada
+de bd_facts.tbl_clientes t1
+unión interna bd_facts.tbl_facturas t2
+donde t2.fechapagada es nula;
+
+
+
+     insertar en bd_facts.tbl_facturas (
+     idFactura, idCliente, tipopago, fechaEmisión, fechaVencimiento, cantidadProductos, subTotalPagar, totalISV, totalpagar, estado, fechapagada)
+	valores (
+    nulo, curdate(), 1, 0, 0, 0, 0
+    );
+    
+    
+    seleccione * de bd_facts.tbl_clientes;
+seleccionar * de bd_facts.tbl_asesores;
+seleccione * de bd_facts.tbl_facturas;
+
+
+    insertar en bd_facts.tbl_facturas(
+		idFactura, idCliente, totalpagar
+    ) valores ( 0, 0, 0 );
+    
+   
+    seleccione contar(*) en cantidadProductos
+    de bd_facts.tbl_facturas
+    donde idFactura = idFactura;
